@@ -3,10 +3,11 @@ import express from "express";
 import express_async_errors from "express-async-errors";
 import routeNotFound from "./middleware/route-not-found.js";
 import errorHandlerMiddleware from "./middleware/custom-error.js";
+import mainRoute from "./routes/main.js";
 const app = express();
 const db_URI = config();
 app.use(express.json());
-
+app.use("/api/v1", mainRoute);
 //middleware
 app.use(routeNotFound);
 app.use(errorHandlerMiddleware);
