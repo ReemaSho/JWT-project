@@ -5,12 +5,13 @@
 // setup authentication so only the request with JWT can access dashboard
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
-import { CustomAPIError } from "../errors/custom-error.js";
+import { BadRequestError } from "../errors/index.js";
+import { StatusCodes } from "http-status-codes";
 
 const login = async(req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
-        throw new CustomAPIError("Please provide email and address", 400);
+        throw new BadRequestError("Please provide email and address");
     }
     // normally id is provided by DB!
     const id = uuidv4();
@@ -18,7 +19,7 @@ const login = async(req, res) => {
     const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {
         expiresIn: "30d",
     });
-    res.status(200).json({ msg: "user created", token });
+    res.status(StatusCodes.OK).json({ msg: "user created", token });
 };
 
 const dashboard = async(req, res) => {
@@ -26,7 +27,7 @@ const dashboard = async(req, res) => {
     const username = user.charAt(0).toUpperCase() + user.slice(1);
     const luckyNumber = Math.floor(Math.random() * 100);
 
-    res.status(200).json({
+    res.status(StatusCodes.OK).json({
         msg: `Hello, ${username}`,
         secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
     });
