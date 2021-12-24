@@ -1,7 +1,6 @@
 import express from "express";
 const router = express.Router();
-import controllers from "../controllers/main.js";
-const { login, dashboard } = controllers;
+import { login, dashboard } from "../controllers/main.js";
 
 router.route("/dashboard").get(dashboard);
 router.route("/login").post(login);
